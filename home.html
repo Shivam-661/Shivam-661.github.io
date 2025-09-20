@@ -23,34 +23,20 @@
             // ✅ Check session
             const { data: { session } } = await supabase.auth.getSession();
             if (!session) {
-                window.location.href = "index.html";
+                // window.location.href = "login.html";
                 return;
             }
 
             // ✅ Show email in navbar
             document.getElementById("user-email").textContent = session.user.email;
 
-            // ✅ Dummy profile check (replace later with Supabase users table check)
-            const profileCompleted = localStorage.getItem("profileCompleted") === "true";
-
-            if (!profileCompleted) {
-                document.getElementById("matrimony-lock").classList.remove("hidden");
-                document.getElementById("matrimony-btn").onclick = () => {
-                    window.location.href = "profile.html"; // Redirect to complete profile
-                };
-            } else {
-                document.getElementById("matrimony-lock").classList.add("hidden");
-                document.getElementById("matrimony-btn").onclick = () => {
-                    window.location.href = "matrimony.html"; // unlocked access
-                };
-            }
+            
         });
 
         // ✅ Logout function
         async function signOut() {
             await supabase.auth.signOut();
-            localStorage.removeItem("profileCompleted"); // reset
-            window.location.href = "index.html";
+             window.location.href = "login.html";
         }
         window.signOut = signOut;
     </script>
@@ -71,7 +57,11 @@
                 <span id="user-email-desktop" class="text-sm text-gray-500"></span>
                 <button onclick="signOut()"
                     class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
-                    Logout
+                    Login
+                </button>
+                <button onclick="signOut()"
+                    class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
+                    Login/Logout
                 </button>
             </nav>
 

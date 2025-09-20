@@ -27,7 +27,7 @@
                 <span id="user-email-desktop" class="text-sm text-gray-500"></span>
                 <button onclick="signOut()"
                     class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
-                    Logout
+                    Login/Logout
                 </button>
             </nav>
 
@@ -222,7 +222,7 @@
         // ✅ Logout
         async function signOut() {
             await client.auth.signOut();
-            window.location.href = "index.html";
+            window.location.href = "login.html";
         }
         window.signOut = signOut;
     </script>
