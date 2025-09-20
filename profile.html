@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SwarnSathi - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3553379388798049"
+     crossorigin="anonymous"></script>
+<meta name="google-adsense-account" content="ca-pub-3553379388798049">
+</head>
+
+<body class="bg-gray-50 font-sans">
+    <!-- Navbar -->
+    <header class="bg-white shadow sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+            <!-- Logo -->
+            <h1 class="text-lg sm:text-xl font-bold text-gray-800">QuickApp Chhindwara</h1>
+
+            <!-- Desktop Menu -->
+            <nav class="hidden sm:flex space-x-6 items-center">
+                <a href="home.html" class="text-gray-700 hover:text-gray-900">Home</a>
+                <a href="profile.html" class="text-gray-700 hover:text-gray-900">Profile</a>
+                <span id="user-email-desktop" class="text-sm text-gray-500"></span>
+                <button onclick="signOut()"
+                    class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
+                    Logout
+                </button>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button id="menu-btn"
+                class="sm:hidden flex items-center p-2 rounded-md hover:bg-gray-100 focus:outline-none">
+                <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden sm:hidden px-4 pb-4">
+            <a href="home.html" class="block text-gray-700 hover:text-gray-900 py-2">Home</a>
+            <a href="profile.html" class="block text-gray-700 hover:text-gray-900 py-2">Profile</a>
+            <span class="block text-gray-600 text-sm mb-2" id="user-email-mobile"></span>
+            <button onclick="signOut()"
+                class="w-full bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-pink-100 to-yellow-100 py-16 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">QuickApp Chhindwara - Your Profile</h2>
+        <button onclick="window.location.href='schools.html'"
+            class="bg-yellow-500 text-white px-5 py-2 rounded-lg hover:bg-yellow-600 transition">
+            View & Edit Your Profile
+        </button>
+    </section>
+
+    <!-- Features Section -->
+    <!-- Features Section -->
+    <section class="max-w-4xl mx-auto px-6 py-12 space-y-10">
+        <!-- Profile Info -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <h2 class="text-xl font-bold mb-4">User Profile</h2>
+            <form id="profileForm" class="space-y-4">
+                <input type="hidden" id="uid" />
+
+                <div>
+                    <label class="block text-sm font-medium">Name</label>
+                    <input id="profileName" type="text" class="w-full border px-3 py-2 rounded-lg"
+                        placeholder="Your name" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium">Email</label>
+                    <input id="profileEmail" type="email" class="w-full border px-3 py-2 rounded-lg"
+                        placeholder="Your email" disabled />
+                </div>
+
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                    Save Profile
+                </button>
+            </form>
+        </div>
+
+        <!-- Firm Info -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <h1 class="text-2xl font-bold mb-4">List Your Business on QuickApp Chhindwara</h1>
+            <p class="text-sm text-gray-600 mb-6">Fill the form below to advertise your service in Chhindwara. We'll
+                review and publish.</p>
+            <form id="firmForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium">Firm Name</label>
+                    <input id="firmName" type="text" class="w-full border px-3 py-2 rounded-lg"
+                        placeholder="Firm Name" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium">Contact</label>
+                    <input id="firmContact" type="text" class="w-full border px-3 py-2 rounded-lg"
+                        placeholder="Firm Contact" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium">Address</label>
+                    <input id="firmAddress" type="text" class="w-full border px-3 py-2 rounded-lg"
+                        placeholder="Firm Address" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium">Category</label>
+                    <select id="firmCategory" name="country" placeholder="Choose Category"
+                        class="w-full border px-3 py-2 rounded-lg">
+                        <option value="">Select a Category</option>
+                        <option value="shops">Local Shop</option>
+                        <option value="school">School</option>
+                        <option value="college">College</option>
+                        <option value="computer">Computer Shop</option>
+                        <option value="mobile">Mobile Shop</option>
+                        <option value="hospital">Hospital</option>
+                        <option value="doctor">Doctor</option>
+                        <option value="garage">Garage</option>
+                        <option value="business">Business</option>
+                        <option value="coaching">Coaching</option>
+                        <option value="gym">Gym</option>
+                        <option value="hotel">Hotel</option>
+                        <option value="job">Job/Consultancy</option>
+                        <option value="library">Book Store or Library</option>
+                        <option value="medical">Medical</option>
+                        <option value="parlour">Parlour</option>
+                        <option value="petrol">Petrol Pump</option>
+                        <option value="property">Property</option>
+                        <option value="room">Room/Hostel</option>
+                        <option value="restaurent">Restaurent</option>
+                        <option value="salon">Salon</option>
+                        <option value="service">Service Center</option>
+                        <option value="shopping">Shopping Mall</option>
+                        <option value="vehicle">Vehicle Agency</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+
+                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+                    Save Firm
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <div class="container d-flex flex-column justify-content-center align-items-center vh-100 text-center">
+        <footer class="mt-5 text-muted">
+            &copy; 2025 QuickApp Chhindwara. All Rights Reserved.
+        </footer>
+    </div>
+
+    <script>
+        // ✅ Supabase client
+        const SUPABASE_URL = "https://qczxnozxubugbcklmkij.supabase.co";
+        const SUPABASE_ANON_KEY =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFjenhub3p4dWJ1Z2Jja2xta2lqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwODQ5NTUsImV4cCI6MjA3MzY2MDk1NX0.orP9of9MxNMcYlDMh1QMUi8aThZ3_R5ISUnD2T9bokA";
+
+        const { createClient } = supabase;
+        const client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+
+
+        // Load profile + firm
+        async function loadProfile() {
+            const { data: { user } } = await client.auth.getUser();
+            if (!user) {
+                window.location.href = "index.html";
+                return;
+            }
+
+            // Prefill profile form
+            document.getElementById("uid").value = user.id;
+            document.getElementById("profileEmail").value = user.email;
+
+            // Fetch user profile from "users"
+            const { data: profile } = await client
+                .from("users")
+                .select("*")
+                .eq("uid", user.id)
+                .single();
+
+            if (profile) {
+                document.getElementById("profileName").value = profile.name ?? "";
+            }
+
+            // Fetch firm details
+            const { data: firm } = await client
+                .from("firm")
+                .select("*")
+                .eq("uid", user.id)
+                .single();
+
+            if (firm) {
+                document.getElementById("firmName").value = firm.firm ?? "";
+                document.getElementById("firmAddress").value = firm.a ?? "";
+                document.getElementById("firmContact").value = firm.c ?? "";
+            }
+        }
+
+        // Save profile
+        document.getElementById("profileForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const uid = document.getElementById("uid").value;
+            const name = document.getElementById("profileName").value;
+
+            await client
+                .from("users")
+                .upsert(
+                    [{ uid, name }],          // the row(s) to insert/update
+                    { onConflict: "uid" }     // column(s) used to detect conflict
+                );
+
+
+            alert("Profile updated ✅");
+        });
+
+        // Save firm
+        document.getElementById("firmForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const uid = document.getElementById("uid").value;
+            const firmName = document.getElementById("firmName").value;
+            const address = document.getElementById("firmAddress").value;
+            const contact = document.getElementById("firmContact").value;
+            const category = document.getElementById("firmCategory").value;
+            const name = document.getElementById("profileName").value;
+
+            await client
+                .from("firm")
+                .upsert(
+                    [
+                        {
+                            uid,
+                            n: name,
+                            firm: firmName,
+                            a: address,
+                            c: contact,
+                            cat: category
+                        }
+                    ],
+                    { onConflict: "uid" }
+                );
+
+
+            alert("Firm updated ✅");
+        });
+
+        loadProfile();
+
+        // ✅ Logout
+        async function signOut() {
+            await client.auth.signOut();
+            window.location.href = "index.html";
+        }
+        window.signOut = signOut;
+    </script>
+
+</body>
+
+</html>

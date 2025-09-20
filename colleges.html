@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SwarnSathi - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3553379388798049"
+     crossorigin="anonymous"></script>
+<meta name="google-adsense-account" content="ca-pub-3553379388798049">
+</head>
+
+<body class="bg-gray-50 font-sans overflow-y-hiddenn">
+    <!-- Navbar -->
+    <header class="bg-white shadow sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+
+            <!-- Logo -->
+            <h1 class="text-lg sm:text-xl font-bold text-gray-800">QuickApp Chhindwara</h1>
+
+            <!-- Desktop Menu -->
+            <nav class="hidden sm:flex space-x-6 items-center">
+                <a href="home.html" class="text-gray-700 hover:text-gray-900">Home</a>
+                <a href="profile.html" class="text-gray-700 hover:text-gray-900">Profile</a>
+                <span id="user-email-desktop" class="text-sm text-gray-500"></span>
+                <button onclick="signOut()"
+                    class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
+                    Logout
+                </button>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button id="menu-btn"
+                class="sm:hidden flex items-center p-2 rounded-md hover:bg-gray-100 focus:outline-none">
+                <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden sm:hidden px-4 pb-4">
+            <a href="home.html" class="block text-gray-700 hover:text-gray-900 py-2">Home</a>
+            <a href="profile.html" class="block text-gray-700 hover:text-gray-900 py-2">Profile</a>
+            <span class="block text-gray-600 text-sm mb-2" id="user-email-mobile"></span>
+            <button onclick="signOut()"
+                class="w-full bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById("menu-btn").addEventListener("click", () => {
+            const menu = document.getElementById("mobile-menu");
+            menu.classList.toggle("hidden");
+        });
+    </script>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-pink-100 to-yellow-100 py-16 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">QuickApp Chhindwara - Colleges</h2>
+    </section>
+
+    <!-- Features Section -->
+    <section class="max-w-6xl mx-auto px-6 py-12 grid gap-4">
+        <div class="gap-2">
+            <input id="searchInput" type="text" placeholder="Search Schools..."
+                class="flex-1 border px-3 py-2 my-2 rounded-lg" />
+            <button id="refreshBtn" class="bg-blue-500 text-white px-4 py-2 my-2 rounded-lg hover:bg-blue-600">
+                Refresh
+            </button>
+        </div>
+
+        <p id="status" class="text-sm text-gray-500"></p>
+
+        <!-- Table -->
+        <!-- <div class="overflow-x-auto mt-6"> -->
+        <!-- <table class="min-w-full divide-y divide-gray-200 border border-gray-300 rounded-lg shadow-sm"> -->
+        <!-- <thead class="bg-gray-100"> -->
+        <!-- </thead> -->
+        <!-- <tbody id="users" class="divide-y divide-gray-200 bg-white"></tbody> -->
+        <div id="users" class="grid grid-cols-1 gap-4 mt-6">
+            <!-- User cards will be injected here -->
+        </div>
+
+        <!-- </table> -->
+        <!-- </div> -->
+
+        <!-- Pagination -->
+        <div class="flex justify-between items-center mt-4">
+            <button id="prevBtn" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Prev</button>
+            <span id="pageInfo" class="text-sm text-gray-600"></span>
+            <button id="nextBtn" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Next</button>
+        </div>
+
+        <p id="error" class="text-red-600"></p>
+    </section>
+
+    <div class="container d-flex flex-column justify-content-center align-items-center vh-100 text-center">
+        <footer class="mt-5 text-muted">
+            &copy; 2025 QuickApp Chhindwara. All Rights Reserved.
+        </footer>
+    </div>
+
+    <script>
+        // ✅ Supabase client
+        const SUPABASE_URL = "https://qczxnozxubugbcklmkij.supabase.co";
+        const SUPABASE_ANON_KEY =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFjenhub3p4dWJ1Z2Jja2xta2lqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwODQ5NTUsImV4cCI6MjA3MzY2MDk1NX0.orP9of9MxNMcYlDMh1QMUi8aThZ3_R5ISUnD2T9bokA";
+
+        const { createClient } = supabase;
+        const client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const statusEl = document.getElementById('status');
+        const usersEl = document.getElementById('users');
+        const errorEl = document.getElementById('error');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const searchInput = document.getElementById('searchInput');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const pageInfo = document.getElementById('pageInfo');
+
+        let currentPage = 0;
+        const pageSize = 5;
+        let totalRows = 0;
+        let currentSearch = "";
+
+        async function loadUsers(page = 0, pageSize = 5, search = "") {
+            statusEl.textContent = 'Loading...';
+            errorEl.textContent = '';
+
+            try {
+                let query = client
+                    .from('firm')
+                    .select('*', { count: 'exact' })
+                    .eq('cat', 'college')
+                    .order('id', { ascending: true })
+                    .range(page * pageSize, page * pageSize + pageSize - 1);
+
+
+                if (search) {
+                    query = query.or(`n.ilike.%${search}%,firm.ilike.%${search}%`);
+                }
+
+                const { data, error, count } = await query;
+                if (error) throw error;
+
+                totalRows = count ?? 0;
+                usersEl.innerHTML = '';
+
+                if (!data || data.length === 0) {
+                    usersEl.innerHTML = `
+          <tr>
+            <td colspan="5" class="text-center py-4 text-gray-500">Registered records will show here</td>
+          </tr>`;
+                } else {
+                    data.forEach(u => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `<div class="bg-white border border-gray-200 rounded-lg shadow p-4 hover:shadow-md transition">
+    <div class="flex items-center gap-3">
+      <!-- Avatar / ID circle -->
+      <div class="w-12 h-12 flex items-center justify-center rounded-full bg-blue-500 text-white font-semibold">
+        ${u.id ?? ''}
+      </div>
+      <!-- Basic Info -->
+      <div>
+        <h3 class="text-lg font-semibold text-gray-800">${u.firm ?? 'No name'}</h3>
+        <p class="text-sm text-gray-500">${u.n ?? ''}</p>
+      </div>
+    </div>
+    <div class="mt-4 space-y-2 text-sm text-gray-700">
+      <p><span class="font-medium">Address:</span> ${u.a ?? ''}</p>
+      <p><span class="font-medium">Contact:</span> ${u.c ?? ''}</p>
+    </div>
+  </div>`;
+                        usersEl.appendChild(row);
+                    });
+                }
+
+                // ✅ Pagination info
+                const totalPages = Math.ceil(totalRows / pageSize);
+                pageInfo.textContent = `Page ${page + 1} of ${totalPages}`;
+                prevBtn.disabled = page <= 0;
+                nextBtn.disabled = page + 1 >= totalPages;
+
+                statusEl.textContent = `Showing ${data.length} of ${totalRows}`;
+            } catch (err) {
+                console.error(err);
+                errorEl.textContent = 'Error loading firm: ' + (err.message || err);
+                statusEl.textContent = '';
+            }
+        }
+
+        // ✅ Event listeners
+        searchInput.addEventListener("input", (e) => {
+            currentSearch = e.target.value.trim();
+            currentPage = 0;
+            loadUsers(currentPage, pageSize, currentSearch);
+        });
+
+        refreshBtn.addEventListener('click', () => loadUsers(currentPage, pageSize, currentSearch));
+
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 0) {
+                currentPage--;
+                loadUsers(currentPage, pageSize, currentSearch);
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentPage++;
+            loadUsers(currentPage, pageSize, currentSearch);
+        });
+
+        // ✅ Initial load
+        loadUsers(currentPage, pageSize, currentSearch);
+
+        // ✅ Logout
+        async function signOut() {
+            await client.auth.signOut();
+            window.location.href = "index.html";
+        }
+        window.signOut = signOut;
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SwarnSathi - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3553379388798049"
+     crossorigin="anonymous"></script>
+<meta name="google-adsense-account" content="ca-pub-3553379388798049">
+    <script type="module">
+        import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+        // 🔹 Supabase setup
+        const SUPABASE_URL = "https://qczxnozxubugbcklmkij.supabase.co";
+        const SUPABASE_ANON_KEY =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFjenhub3p4dWJ1Z2Jja2xta2lqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwODQ5NTUsImV4cCI6MjA3MzY2MDk1NX0.orP9of9MxNMcYlDMh1QMUi8aThZ3_R5ISUnD2T9bokA";
+
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            // ✅ Check session
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                window.location.href = "index.html";
+                return;
+            }
+
+            // ✅ Show email in navbar
+            document.getElementById("user-email").textContent = session.user.email;
+
+            // ✅ Dummy profile check (replace later with Supabase users table check)
+            const profileCompleted = localStorage.getItem("profileCompleted") === "true";
+
+            if (!profileCompleted) {
+                document.getElementById("matrimony-lock").classList.remove("hidden");
+                document.getElementById("matrimony-btn").onclick = () => {
+                    window.location.href = "profile.html"; // Redirect to complete profile
+                };
+            } else {
+                document.getElementById("matrimony-lock").classList.add("hidden");
+                document.getElementById("matrimony-btn").onclick = () => {
+                    window.location.href = "matrimony.html"; // unlocked access
+                };
+            }
+        });
+
+        // ✅ Logout function
+        async function signOut() {
+            await supabase.auth.signOut();
+            localStorage.removeItem("profileCompleted"); // reset
+            window.location.href = "index.html";
+        }
+        window.signOut = signOut;
+    </script>
+</head>
+
+<body class="bg-gray-50 font-sans">
+    <!-- Navbar -->
+    <header class="bg-white shadow sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+
+            <!-- Logo -->
+            <h1 class="text-lg sm:text-xl font-bold text-gray-800">QuickApp Chhindwara</h1>
+
+            <!-- Desktop Menu -->
+            <nav class="hidden sm:flex space-x-6 items-center">
+                <a href="home.html" class="text-gray-700 hover:text-gray-900">Home</a>
+                <a href="profile.html" class="text-gray-700 hover:text-gray-900">Profile</a>
+                <span id="user-email-desktop" class="text-sm text-gray-500"></span>
+                <button onclick="signOut()"
+                    class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
+                    Logout
+                </button>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button id="menu-btn"
+                class="sm:hidden flex items-center p-2 rounded-md hover:bg-gray-100 focus:outline-none">
+                <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden sm:hidden px-4 pb-4">
+            <a href="home.html" class="block text-gray-700 hover:text-gray-900 py-2">Home</a>
+            <a href="profile.html" class="block text-gray-700 hover:text-gray-900 py-2">Profile</a>
+            <span class="block text-gray-600 text-sm mb-2" id="user-email-mobile"></span>
+            <button onclick="signOut()"
+                class="w-full bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById("menu-btn").addEventListener("click", () => {
+            const menu = document.getElementById("mobile-menu");
+            menu.classList.toggle("hidden");
+        });
+    </script>
+
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-pink-100 to-yellow-100 py-16 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Welcome to QuickApp Chhindwara</h2>
+        <p class="text-gray-600 max-w-xl mx-auto">
+            Your one-stop local app for services, shopping, education, rentals, and more in Chhindwara.
+        </p>
+    </section>
+
+    <!-- Features Section -->
+    <section class="max-w-6xl mx-auto">
+
+        <div class="mx-auto px-6 py-12 grid gap-8 grid-cols-1 md:grid-cols-2">
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://cdn.jsdelivr.net/npm/heroicons@2.1.1/24/solid/building-library.svg"
+                    class="w-16 h-16 mb-4" alt="Schools">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Schools</h3>
+                <button onclick="window.location.href='schools.html'"
+                    class="bg-yellow-500 text-white px-5 py-2 rounded-lg hover:bg-yellow-600 transition">
+                    Explore Schools
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://cdn.jsdelivr.net/npm/heroicons@2.1.1/24/solid/building-office.svg"
+                    class="w-16 h-16 mb-4" alt="Colleges">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Colleges</h3>
+                <button onclick="window.location.href='colleges.html'"
+                    class="bg-pink-500 text-white px-5 py-2 rounded-lg hover:bg-pink-600 transition">
+                    Explore Colleges
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://api.iconify.design/mdi:doctor.svg" class="w-16 h-16 mb-4" alt="Doctors">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Doctors</h3>
+                <button onclick="window.location.href='doctors.html'"
+                    class="bg-yellow-500 text-white px-5 py-2 rounded-lg hover:bg-yellow-600 transition">
+                    Explore Doctors
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://api.iconify.design/mdi:hospital-building.svg" class="w-16 h-16 mb-4" alt="Hospitals">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Hospitals</h3>
+                <button onclick="window.location.href='hospitals.html'"
+                    class="bg-pink-500 text-white px-5 py-2 rounded-lg hover:bg-pink-600 transition">
+                    Explore Hospitals
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://cdn.jsdelivr.net/npm/heroicons@2.1.1/24/solid/home-modern.svg" class="w-16 h-16 mb-4"
+                    alt="Properties">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Properties</h3>
+                <button onclick="window.location.href='properties.html'"
+                    class="bg-yellow-500 text-white px-5 py-2 rounded-lg hover:bg-yellow-600 transition">
+                    Explore Properties
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://cdn.jsdelivr.net/npm/heroicons@2.1.1/24/solid/home.svg" class="w-16 h-16 mb-4"
+                    alt="Rooms">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Rooms</h3>
+                <button onclick="window.location.href='rooms.html'"
+                    class="bg-pink-500 text-white px-5 py-2 rounded-lg hover:bg-pink-600 transition">
+                    Explore Rooms
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://api.iconify.design/mdi:briefcase.svg" class="w-16 h-16 mb-4" alt="Jobs">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Jobs</h3>
+                <button onclick="window.location.href='jobs.html'"
+                    class="bg-yellow-500 text-white px-5 py-2 rounded-lg hover:bg-yellow-600 transition">
+                    Explore Jobs
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://api.iconify.design/mdi:school.svg" class="w-16 h-16 mb-4" alt="Coachings">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Coachings</h3>
+                <button onclick="window.location.href='coachings.html'"
+                    class="bg-pink-500 text-white px-5 py-2 rounded-lg hover:bg-pink-600 transition">
+                    Explore Coachings
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://api.iconify.design/mdi:storefront-outline.svg" class="w-16 h-16 mb-4"
+                    alt="Local Shops">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Local Shops</h3>
+                <button onclick="window.location.href='shops.html'"
+                    class="bg-yellow-500 text-white px-5 py-2 rounded-lg hover:bg-yellow-600 transition">
+                    Explore Local Shops
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://api.iconify.design/mdi:briefcase-variant-outline.svg" class="w-16 h-16 mb-4"
+                    alt="Businesses">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Businesses</h3>
+                <button onclick="window.location.href='businesses.html'"
+                    class="bg-pink-500 text-white px-5 py-2 rounded-lg hover:bg-pink-600 transition">
+                    Explore Businesses
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://api.iconify.design/mdi:content-cut.svg" class="w-16 h-16 mb-4" alt="Salons">
+
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Salons</h3>
+                <button onclick="window.location.href='salons.html'"
+                    class="bg-yellow-500 text-white px-5 py-2 rounded-lg hover:bg-yellow-600 transition">
+                    Explore Salons
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://api.iconify.design/mdi:lipstick.svg" class="w-16 h-16 mb-4" alt="Beauty Parlours">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Beauty Parlours</h3>
+                <button onclick="window.location.href='parlours.html'"
+                    class="bg-pink-500 text-white px-5 py-2 rounded-lg hover:bg-pink-600 transition">
+                    Explore Beauty Parlours
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://api.iconify.design/mdi:dumbbell.svg" class="w-16 h-16 mb-4" alt="Gym">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Gyms</h3>
+                <button onclick="window.location.href='gyms.html'"
+                    class="bg-yellow-500 text-white px-5 py-2 rounded-lg hover:bg-yellow-600 transition">
+                    Explore Gyms
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://api.iconify.design/mdi:bookshelf.svg" class="w-16 h-16 mb-4" alt="Library">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Libraries</h3>
+                <button onclick="window.location.href='libraries.html'"
+                    class="bg-pink-500 text-white px-5 py-2 rounded-lg hover:bg-pink-600 transition">
+                    Explore Book Stores & Libraries
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://api.iconify.design/mdi:hotel.svg" class="w-16 h-16 mb-4" alt="Hotels">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Hotels</h3>
+                <button onclick="window.location.href='hotels.html'"
+                    class="bg-yellow-500 text-white px-5 py-2 rounded-lg hover:bg-yellow-600 transition">
+                    Explore Hotels
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://api.iconify.design/mdi:silverware-fork-knife.svg" class="w-16 h-16 mb-4"
+                    alt="Restaurants">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Restaurants</h3>
+                <button onclick="window.location.href='restaurents.html'"
+                    class="bg-pink-500 text-white px-5 py-2 rounded-lg hover:bg-pink-600 transition">
+                    Explore Restaurants
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://api.iconify.design/mdi:cellphone.svg" class="w-16 h-16 mb-4" alt="Mobile Shops">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Mobile Shops</h3>
+                <button onclick="window.location.href='mobile.html'"
+                    class="bg-yellow-500 text-white px-5 py-2 rounded-lg hover:bg-yellow-600 transition">
+                    Explore Mobile Shops
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://api.iconify.design/mdi:laptop.svg" class="w-16 h-16 mb-4" alt="Computer Shops">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Computer Shops</h3>
+                <button onclick="window.location.href='computer.html'"
+                    class="bg-pink-500 text-white px-5 py-2 rounded-lg hover:bg-pink-600 transition">
+                    Explore Computer Shops
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://api.iconify.design/mdi:car.svg" class="w-16 h-16 mb-4" alt="Vehicles">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Vehicle Agencies</h3>
+                <button onclick="window.location.href='vehicle.html'"
+                    class="bg-yellow-500 text-white px-5 py-2 rounded-lg hover:bg-yellow-600 transition">
+                    Explore Vehicle Agencies
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://api.iconify.design/mdi:wrench.svg" class="w-16 h-16 mb-4" alt="Garages">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Garages</h3>
+                <button onclick="window.location.href='garage.html'"
+                    class="bg-pink-500 text-white px-5 py-2 rounded-lg hover:bg-pink-600 transition">
+                    Explore Garages
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://api.iconify.design/mdi:gas-station.svg" class="w-16 h-16 mb-4" alt="Petrol Pumps">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Petrol Pumps</h3>
+                <button onclick="window.location.href='petrol.html'"
+                    class="bg-yellow-500 text-white px-5 py-2 rounded-lg hover:bg-yellow-600 transition">
+                    Explore Petrol Pumps
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://api.iconify.design/mdi:tools.svg" class="w-16 h-16 mb-4" alt="Service Centers">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Service Centers</h3>
+                <button onclick="window.location.href='service.html'"
+                    class="bg-pink-500 text-white px-5 py-2 rounded-lg hover:bg-pink-600 transition">
+                    Explore Service Centers
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://api.iconify.design/mdi:cart.svg" class="w-16 h-16 mb-4" alt="Shopping Centers">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Shopping Centers</h3>
+                <button onclick="window.location.href='shopping.html'"
+                    class="bg-yellow-500 text-white px-5 py-2 rounded-lg hover:bg-yellow-600 transition">
+                    Explore Shopping Centers
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://api.iconify.design/mdi:pharmacy.svg" class="w-16 h-16 mb-4" alt="Medical Stores">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Medical Stores</h3>
+                <button onclick="window.location.href='medical.html'"
+                    class="bg-pink-500 text-white px-5 py-2 rounded-lg hover:bg-pink-600 transition">
+                    Explore Medicals
+                </button>
+            </div>
+
+        </div>
+
+
+
+    </section>
+
+   <div class="container d-flex flex-column justify-content-center align-items-center vh-100 text-center">
+    <footer class="mt-5 text-muted">
+      &copy; 2025 QuickApp Chhindwara. All Rights Reserved.
+    </footer>
+  </div>
+</body>
+
+</html>
